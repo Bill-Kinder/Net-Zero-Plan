@@ -1,4 +1,4 @@
-class Program:
+class Parameters:
 # This class handles all the calculations of the program.
     def __init__(self, params=[], emissions=0, numTrees = 0, cost = 0, costTree = 0, treeConst = 0):
         # params, short for parameters, is a list of dictionaries. 
@@ -23,7 +23,7 @@ class Program:
         # Intended to load a list of parameters from a file e.g.: csv.
         return None
 
-    def addParam(self, question = '', calculation = lambda x: 0):
+    def addParam(self, question = '', calculation = lambda x: x):
         # This function adds a new dictionary to the list of parameters. The only necessary inputs are the question and the conversion factor.
         param = {'q' : question, 'a' : 0, 'c' : calculation}
         self.params.append(param)
@@ -31,9 +31,10 @@ class Program:
 
     def updateAnswer(self, paramIndex=0, newAns=0):
         # This function simply updates the "answer" field of a parameter dictionary, intended for when the user enters a number into the box.
-        self.params[paramIndex]['a'] = newAns
+        self.params[paramIndex]['a'] = float(newAns)
+        print(self.params[paramIndex]['a']==float(newAns))
         return None
-
+    
     def calcTotalEmissions(self):
         # This function adds up the emissions of each parameter by inserting the "answer" field of each dictionary into the "calculation" field (lambda function).
         total = 0
