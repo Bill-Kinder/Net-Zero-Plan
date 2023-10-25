@@ -36,7 +36,7 @@ def updateEmissions(event):
         return False
 
 pg = Parameters()
-pg.addParam('How many people per meeting?', lambda x: x)
+pg.addParam(question='How many people per meeting?', calculation=lambda x: x,scope=0b100)
 pg.addParam('How many people flying in?',lambda x: 50*x)
 pg.addParam('test2')
 pg.addParam('test3')
