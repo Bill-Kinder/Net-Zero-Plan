@@ -1,5 +1,6 @@
 import tkinter as tk
-from Program import Parameters
+from Program import Calculator
+import csv
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -8,7 +9,23 @@ buttons = []
 entries = []
 frames = []
 
-def loadQuestions(paramsList):
+def startGUI(configFileName):
+    # Initialises some variables found in the config file, as well as loading the questions into the GUI.
+    with open(configFileName, mode = 'r') as file:
+        csvFile = csv.DictReader(file)
+        for lines in csvFile:
+            return lines
+
+def loadQuestions(csvFileName):
+    # Loads the questions from a csv file and adds them into the parameters list.
+    with open(csvFileName, mode = 'r') as file:
+        csvFile = csv.DictReader(file)
+        for lines in csvFile:
+            calc.addParam(question = lines['question'], weight = lambda x: float(lines['weight'])*x, scope = int(lines['scope']), sourceType = lines['sourceType'])
+    return None
+
+def guiPrint(paramsList):
+    # Displays all questions and answer boxes on the GUI screen.
     maxWidth = 0
     for p in range(0, len(paramsList)):
         t = paramsList[p]['q']
@@ -26,23 +43,32 @@ def loadQuestions(paramsList):
     return maxWidth
 
 def updateEmissions(event):
+    # Called when the "CALCULATE!" button is clicked.
+    # Calculates gross emissions, number of trees required to reach net zero, and total cost, and displays them on the GUI screen. 
     try:
-        for p in range(0,len(pg.params)):
-            pg.updateAnswer(paramIndex=p, newAns=entries[p].get())
-        em = pg.calcTotalEmissions()
-        pg.calcTreesAndCost()
-        labels[-1].configure(text = "Gross emissions: " + str(em) + "kgCO2e.\nPlant " + str(pg.numTrees) + " trees to reach net zero.\nCost: " + str(pg.cost) + "AUD.")
+        for p in range(0,len(calc.params)):
+            calc.updateAnswer(paramIndex=p, newAns=entries[p].get())
+        em = calc.calcTotalEmissions()
+        calc.calcTreesAndCost()
+        labels[-1].configure(text = "Gross emissions: {:.2f}".format(em) + "kgCO2e.\nTrees needed to reach net zero: " + str(calc.numTrees) + "\nCost: ${:.2f}".format(calc.cost) + " (AUD).")
         return True
+    except ZeroDivisionError:
+        labels[-1].configure(text = "\nZero division error. Please check your inputs.\n")
+        return False
     except ValueError:
-        labels[-1].configure(text = "Invalid input.")
+        labels[-1].configure(text = "\nInvalid input. Please try again.\n")
         return False
 
 def createNewGraph(event):
+    # Called when the "DISPLAY PLOT" button is clicked.
+    # Creates the CO2 per year and cost vs number of trees planted plot, as seen in our trade show poster.
+    # Includes dashed lines at the exact net zero point, and the practical net zero point (where the number of trees is rounded up).
+    
     #Creating data arrays
-    Trees = np.arange(2*pg.numTrees)
-    c02_offset = Trees * pg.treeConst
-    cost = Trees * pg.costTree
-    total_emissions = np.full(2*pg.numTrees, pg.emissions)
+    Trees = np.arange(2*calc.numTrees)
+    c02_offset = Trees * calc.co2perTree
+    cost = Trees * calc.costTree
+    total_emissions = np.full(2*calc.numTrees, calc.emissions)
     net_emissions = total_emissions - c02_offset # Needs to extend at least to 0, for net zero.
     #Graphing arrays
     # Create a Matplotlib figure with two subplots
@@ -64,8 +90,8 @@ def createNewGraph(event):
     ax1.grid(which = "minor", linewidth = 0.2)
     ax1.minorticks_on()
 
-    plt.axvline(x=pg.numTrees, linestyle='--', label='Effective net zero point')
-    plt.axvline(x=pg.emissions/pg.treeConst, linestyle='--',color='brown', label='Net zero emissions point')
+    plt.axvline(x=calc.numTrees, linestyle='--', label='Practical net zero point')
+    plt.axvline(x=calc.emissions/calc.co2perTree, linestyle='--',color='brown', label='Net zero emissions point')
 
     # Add legends to the subplots
     ax1.legend(loc='upper left')
@@ -78,9 +104,15 @@ def createNewGraph(event):
     return None
 
 def createPieChart(event):
+    # Called when the "DISPLAY PIE CHART" button is clicked.
+    # Creates a pie chart showing the percentage contribution of each emissions source.
+
     # Sample data
-    sizes = [15, 30, 45, 10]
-    labels = ['A', 'B', 'C', 'D']
+    sizes = []
+    labels = []
+    for p in calc.params:
+        sizes.append(p['pct'])
+        labels.append(p['src'])
 
     # Create a pie chart
     plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
@@ -89,70 +121,68 @@ def createPieChart(event):
     plt.axis('equal')
 
     # Add a title
-    plt.title('Sample Pie Chart')
+    plt.title('Emissions sources contributions')
 
     # Display the pie chart
     plt.show()
     return None
 
-pg = Parameters(treeConst = 25, costTree = 1.55)
-pg.addParam(question='How many people per meeting?', calculation=lambda x: 1.09*x,scope=0b100)
-pg.addParam('How many people flying in?', lambda x: 50*x)
-pg.addParam('Average travel distance', lambda x: x)
+p = startGUI('config.csv')
+calc = Calculator(co2perTree = float(p['CO2 equivalent absorbed by 1 tree (kgCO2e)']), costTree = float(p['Cost of 1 tree (AUD)']))
+loadQuestions(p['Parameters file name'])
 
-print(pg.params)
-rowsRange = list(range(0,2*(len(pg.params)+2)))
+rowsRange = list(range(0,2*(len(calc.params)+2)))
 
 window = tk.Tk()
-maxWidth = loadQuestions(pg.params)
+maxWidth = guiPrint(calc.params)
 window.rowconfigure(rowsRange, minsize=50)
 window.columnconfigure([0, 1, 2, 3], minsize=50)
-    
-graphFrame = tk.Frame()
-frames.append(graphFrame)
-graphFrame.grid(row = 0, column = 1, sticky="nsew")
 
 answerFrame = tk.Frame(master = window, relief = tk.RIDGE, borderwidth = 5)
-answerLabel = tk.Label(master=answerFrame, text = 'Emissions: 0kgCO2e')
-answerLabel.grid(row=len(pg.params)+1, column = 0, sticky = "nsew")
-answerFrame.grid(row=len(pg.params)+1, column = 0, sticky = "nsew")
+answerLabel = tk.Label(master = answerFrame, text = '\nFill in the boxes and click \"CALCULATE!\"\n')
+answerLabel.grid(row=len(calc.params)+1, column = 0, sticky = "nsew")
+answerFrame.grid(row=len(calc.params)+1, column = 0, sticky = "nsew")
 labels.append(answerLabel)
 frames.append(answerFrame)
 
+buttonWidth = 25
+if(buttonWidth < maxWidth):
+    buttonWidth = maxWidth
+
 calculateButton = tk.Button(
     text="CALCULATE!",
-    width=25,
-    height=5,
+    width=buttonWidth,
+    height=2,
     bg="yellow",
     fg="red",
-    master = frames[-1]
+    master = answerFrame
 )
 
-calculateButton.grid(row=len(pg.params)+2, column = 0, sticky = "nsew")
+calculateButton.grid(row=len(calc.params)+2, column = 0, sticky = "nsew")
 calculateButton.bind("<Button-1>", updateEmissions)
 
 plotButton = tk.Button(
     text = "DISPLAY PLOT",
-    width = 25,
+    width = buttonWidth,
     height = 2,
     bg = "yellow",
-    fg = "red",
-    master = graphFrame
+    fg = "green",
+    master = answerFrame
 )
 
-plotButton.grid(row = 2, column = 1, sticky="nsew")
+plotButton.grid(row=len(calc.params)+3, column = 0, sticky="nsew")
 plotButton.bind("<Button-1>", createNewGraph)
 
 pieButton = tk.Button(
     text = "DISPLAY PIE CHART",
-    width = 25,
+    width = buttonWidth,
     height = 2,
     bg = "yellow",
-    fg = "red",
-    master = graphFrame
+    fg = "blue",
+    master = answerFrame
 )
 
-pieButton.grid(row = 3, column = 1, sticky="nsew")
+pieButton.grid(row=len(calc.params)+4, column = 0, sticky="nsew")
 pieButton.bind("<Button-1>", createPieChart)
 
 window.mainloop()
