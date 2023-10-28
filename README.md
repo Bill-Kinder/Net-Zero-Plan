@@ -2,6 +2,8 @@
 A Git repository for our net zero project. Calculate the number of trees and cost of planting them to offset the Net Zero Initiative's carbon dioxide equivalent emissions!
 
 # Files
+- "CLICK ME! (MAC).command": Runs the program on MAC OS.
+- "CLICK ME! (WINDOWS).py": Runs the program on Windows OS. Also contains the main code for the program.
 - config.csv: 
 
 # How to open the program
