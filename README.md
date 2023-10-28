@@ -9,9 +9,10 @@ A Git repository for our net zero project. Calculate the number of trees and cos
 - "Program.py": Contains code used by the program.
 
 - "params.csv": Contains all the questions and emissions sources used in the program to determine emissions sources and calculate total emissions. The parameters are:
-  - question: A string containing the question that links an emissions source or activity to a certain amount of emissions. This could be something like "How many people attend each meeting?"
+  - question: A string containing the question that links an emissions source or activity to a quantity of emissions. This could be something like "How many people attend each meeting?"
   - weight: A numerical variable that determines how much an emissions source contributes. An example of weight could be the number "50", indicating that the specific emissions source contributes 50kg of CO2 equivalent per unit of the emissions source. This value should always be numerical, otherwise the program will not include it.
-  - scope: A number that determines what combination of scopes 1, 2 and 3 that particular emissions source is. Due to time constraints this parameter was not integrated fully into the program, so the user should leave it as "0".
+  - scope: A number that determines what combination of scopes 1, 2 and 3 that particular emissions source is. Due to time constraints this parameter was not integrated fully into the program.
+  - sourceType: A string that tells the program what to call the emissions source. e.g.: "Fuel emissions". Distinct from the question string. Used by the program when generating the pie chart.
   
 - "config.csv": Comma-separated value (csv) file containing 3 headings: "Cost of 1 tree (AUD)", "CO2 equivalent absorbed by 1 tree (kgCO2e)" and "Parameters file name". Parameters can be edited by opening the csv file in a spreadsheet or text editor (e.g.: Excel). However, the file extension must always be ".csv".
   - Cost of 1 tree: By default we assumed 1 tree costs $1.55 in Australian Dollars. This can be changed by the user if necessary.
@@ -32,6 +33,9 @@ A Git repository for our net zero project. Calculate the number of trees and cos
     - Right click the folder "Net-Zero-Plan-main", and click the option "New terminal at folder".
     - Wait for the terminal window to load. When you can type commands, enter the command `chmod u+x "CLICK ME! (MAC).command"`. This should grant you access privileges. Try to double click the file again.
 
-# Usage instructions
+# How to use the program
 
-1. 
+1. Enter the correct quantities into the boxes under each question.
+2. Click the red "CALCULATE!" button to calculate total emissions, number of trees to reach net zero, and cost.
+3. Click the green "DISPLAY PLOT" button to display a graph showing CO2 per year vs number of trees planted vs cost.
+4. Click the blue "DISPLAY PIE CHART" button to display a pie chart detailing how each emissions source contributes to the overall emissions.
