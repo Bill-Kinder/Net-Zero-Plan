@@ -1,6 +1,6 @@
 class Calculator:
 # This class handles all the calculations of the program.
-    def __init__(self, params=[], emissions=0, numTrees = 0, cost = 0, costTree = 0, co2perTree = 0):
+    def __init__(self, params=[], emissions=0, numTrees = 0, cost = 0, costTree = 1.55, co2perTree = 25):
         # Initialisation function.
         # params: a list of dictionaries. "params" is short for "parameters".
         # emissions: the total kgCO2e emitted, based on the parameters entered.
@@ -16,11 +16,11 @@ class Calculator:
         self.costTree = costTree
         self.co2perTree = co2perTree
 
-    def addParam(self, question = 'Question string', weight = lambda x: x, scope = 0b000, sourceType = 'Source type string', pctCont = 0):
+    def addParam(self, question = 'Question string', weight = 1, scope = 0b000, sourceType = 'Source type string', pctCont = 0):
         # Adds a new dictionary to the list of parameters (params).
         # question: displayed to the user to determine how much an emissions source contributes to the total emissions. e.g.: "How many people take public transport?". If it is an empty string, it will be the same as "sourceType."
         # answer: a quantitative measure of the emissions source in the question e.g.: 50 people take public transport.
-        # weight: a lambda function which calculates the kgCO2e emitted by the source, given the answer. e.g.: 150*x means 150kgCO2e is produced per quantity x.
+        # weight: how much CO2 (kg) the parameter causes per unit of the emissions source. e.g.: 150*x means 150kgCO2e is produced per quantity x.
         # scope: an integer between 0 and 7, in binary format, which determines which emissions (scope 1, 2 or 3) that the question refers to. e.g.: 010: Only scope 2. 101: Only scope 1 and scope 3.
         # sourceType: a string detailing the source of carbon emissions for a parameter. e.g.: Public transport. Only explicitly defined for the purposes of the pie chart.
         # pctCont: percent contribution of the parameter to the total emissions.
@@ -40,9 +40,9 @@ class Calculator:
         # Adds up the emissions of each parameter by inserting the "answer" field of each dictionary into the "weight" field.
         total = 0
         for p in self.params:
-            total+=p['w'](p['a'])
+            total+=p['w']*p['a']
         for p in self.params:
-            p['pct'] = (p['w'](p['a'])/total)*100
+            p['pct'] = ((p['w']*p['a'])/total)*100
         self.emissions = total
         return self.emissions
 
@@ -54,16 +54,22 @@ class Calculator:
 
     def loopThroughQuestions(self):
         # Takes user input for each parameter and updates the answers field. Used in the terminal. Unused for GUI.
-        for p in range(0,len(self.params)):
-            self.updateAnswer(p,input(p['q'] + '\nAnswer: '))
-        print("Finished")
+        i = 0
+        for p in self.params:
+            print('\n============================================================\n')
+            print(p['q'])
+            self.updateAnswer(i,input('Answer: '))
+            i += 1
         return None
 
     def runProgram(self):
         # Loops through questions and makes calculations in the terminal. Unused for GUI.
+        input("\n\n============================================================\n\nWelcome to the net zero program!\nPress ENTER to begin.")
         self.loopThroughQuestions()
         e = self.calcTotalEmissions()
-        print('Total emissions = ' + str(e) + 'kgCO2e.')
+        print('\n============================================================\n\nTotal emissions = {:.2f}kgCO2e.\n'.format(e))
         x = self.calcTreesAndCost()
-        print('You need to plant ' + str(x[0]) + ' trees, which will cost ' + str(x[1]) + 'AUD.')
+        print('You need to plant ' + str(x[0]) + ' trees, which will cost {:.2f}'.format(x[1]) + 'AUD.\n')
+        input("============================================================\nFinished! Press ENTER to end.")
         return None
+    

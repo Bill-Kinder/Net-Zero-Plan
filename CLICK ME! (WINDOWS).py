@@ -22,7 +22,7 @@ def loadQuestions(csvFileName):
         csvFile = csv.DictReader(file)
         for lines in csvFile:
             try:
-                calc.addParam(question = lines['question'], weight = lambda x: float(lines['weight'])*x, scope = 0, sourceType = lines['sourceType'])
+                calc.addParam(question = lines['question'], weight = float(lines['weight']), scope = 0, sourceType = lines['sourceType'])
             except ValueError:
                 print("A parameter had invalid values. Please check your parameters settings. Parameter question value: " + lines['question'])
     return None
@@ -50,10 +50,12 @@ def updateEmissions(event):
     # Calculates gross emissions, number of trees required to reach net zero, and total cost, and displays them on the GUI screen. 
     try:
         for p in range(0,len(calc.params)):
+            #print("Old answer: " + str(calc.params[p]['a']))
             calc.updateAnswer(paramIndex=p, newAns=entries[p].get())
-        em = calc.calcTotalEmissions()
+            #print("New answer: " + str(calc.params[p]['a']))
+        calc.calcTotalEmissions()
         calc.calcTreesAndCost()
-        labels[-1].configure(text = "Gross emissions: {:.2f}".format(em) + "kgCO2e.\nTrees needed to reach net zero: " + str(calc.numTrees) + "\nCost: ${:.2f}".format(calc.cost) + " (AUD).")
+        labels[-1].configure(text = "Gross emissions: {:.2f}".format(calc.emissions) + "kgCO2e.\nTrees needed to reach net zero: " + str(calc.numTrees) + "\nCost: ${:.2f}".format(calc.cost) + " (AUD).")
         return True
     except ZeroDivisionError:
         labels[-1].configure(text = "\nZero division error. Please check your inputs.\n")
@@ -115,7 +117,7 @@ def createPieChart(event):
     labels = []
     for p in calc.params:
         sizes.append(p['pct'])
-        labels.append(p['src'])
+        bels.append(p['src'])
 
     # Create a pie chart
     plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
