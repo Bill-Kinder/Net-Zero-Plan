@@ -10,7 +10,7 @@ A Git repository for our net zero project. Calculate the number of trees and cos
 
 - "params.csv": Contains all the questions and emissions sources used in the program to determine emissions sources and calculate total emissions. The parameters are:
   - question: A string containing the question that links an emissions source or activity to a quantity of emissions. This could be something like "How many people attend each meeting?"
-  - weight: A numerical variable that determines how much an emissions source contributes. An example of weight could be the number "50", indicating that the specific emissions source contributes 50kg of CO2 equivalent per unit of the emissions source. This value should always be numerical, otherwise the program will not include it.
+  - weight: A numerical variable that determines how much an emissions source contributes. An example of weight could be the number "50", indicating that the specific emissions source contributes 50kg of CO2 equivalent per unit of the emissions source. This value should always be numerical.
   - scope: A number that determines what combination of scopes 1, 2 and 3 that particular emissions source is. Due to time constraints this parameter was not integrated fully into the program.
   - sourceType: A string that tells the program what to call the emissions source. e.g.: "Fuel emissions". Distinct from the question string. Used by the program when generating the pie chart.
   
