@@ -2,11 +2,13 @@
 A Git repository for our net zero project. Calculate the number of trees and cost of planting them to offset the Net Zero Initiative's carbon dioxide equivalent emissions!
 
 # File Information
-- "CLICK ME! (MAC).command": Runs the program on MAC OS.
+- "CLICK ME! (MAC).command": Double click this to run the GUI program on MAC OS.
   
-- "CLICK ME! (WINDOWS).py": Runs the program on Windows OS. Also contains the main code for the program.
+- "CLICK ME! (WINDOWS).py": Double click this to run the GUI program on Windows OS. Also contains the main code for the program.
   
 - "Program.py": Contains code used by the program.
+
+- "cmd-line-testing.py": A Python executable script used for testing the main functions of the program. Only used in the command line for basic tests. Not used for GUI.
 
 - "params.csv": Contains all the questions and emissions sources used in the program to determine emissions sources and calculate total emissions. The parameters are:
   - question: A string containing the question that links an emissions source or activity to a quantity of emissions. This could be something like "How many people attend each meeting?"
@@ -28,7 +30,7 @@ A Git repository for our net zero project. Calculate the number of trees and cos
   
 - Opening the program depends on what computer you are using:
   
-  - If you are using Windows, double click the file "gui.py" to run the program. Open the program using Python launcher.
+  - If you are using Windows, double click the file "CLICK ME! (WINDOWS).py" to run the program. Open the program using Python launcher.
     
   - If you are using Mac, double click the file named "CLICK ME! (MAC).command" to run the program. If you do not have appropriate access privileges, do the following:
     - Right click the folder "Net-Zero-Plan-main", and click the option "New terminal at folder".
@@ -41,4 +43,12 @@ A Git repository for our net zero project. Calculate the number of trees and cos
 3. Click the green "DISPLAY PLOT" button to display a plot showing CO2 per year vs number of trees planted vs cost. Close the graph window when finished.
 4. Click the blue "DISPLAY PIE CHART" button to display a pie chart detailing how each emissions source contributes to the overall emissions. Close the pie chart window when finished.
 5. Each time you change the numbers under each question, you need to press "CALCULATE!" again to update the plot and pie chart.
-6. Currently, displaying the pie chart and plot at the same time is not possible. You need to close the pie chart if you want to open the plot, and vice versa.
+6. Displaying the pie chart and plot at the simultaneously sometimes leads to one being displayed on top of the other. If this happens, just close the pie chart/plot window and view them separately.
+
+# How the program works
+
+1. The program reads the contents of "config.csv" and "params.csv" to determine which questions to ask, what weightings to assign to each question, and determine other constants such as how much 1 tree costs, and how much CO2 is absorbed by 1 tree.
+2. The program displays the questions and all other GUI elements in the window.
+3. When the user enters numbers into the answer boxes, and clicks "CALCULATE!", the program calculates total emissions, number of trees and cost in the box, and displays the variables above the button.
+
+
