@@ -22,7 +22,7 @@ def loadQuestions(csvFileName):
         csvFile = csv.DictReader(file)
         for lines in csvFile:
             try:
-                calc.addParam(question = lines['question'], weight = lambda x: float(lines['weight'])*x, scope = int(lines['scope']), sourceType = lines['sourceType'])
+                calc.addParam(question = lines['question'], weight = lambda x: float(lines['weight'])*x, scope = 0, sourceType = lines['sourceType'])
             except ValueError:
                 print("A parameter had invalid values. Please check your parameters settings. Parameter question value: " + lines['question'])
     return None
