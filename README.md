@@ -4,7 +4,11 @@ A Git repository for our net zero project. Calculate the number of trees and cos
 # Files
 - "CLICK ME! (MAC).command": Runs the program on MAC OS.
 - "CLICK ME! (WINDOWS).py": Runs the program on Windows OS. Also contains the main code for the program.
-- config.csv: 
+- "Program.py": Contains code used by the program.
+- "config.csv": Comma-separated value (csv) file containing 3 headings: "Cost of 1 tree (AUD)", "CO2 equivalent absorbed by 1 tree (kgCO2e)" and "Parameters file name". Parameters can be edited by opening the csv file in a spreadsheet or text editor (e.g.: Excel). However, the file extension must always be ".csv".
+  - Cost of 1 tree: By default we assumed 1 tree costs $1.55 in Australian Dollars. This can be changed by the user if necessary.
+  - CO2 equivalent absorbed by 1 tree: By default we assumed 1 tree absorbs 25kg of CO2 equivalent per year of its life. This can be changed if necessary.
+  - Parameters file name: By default, set to "params.csv". If the user has a different parameters file, this field can be changed. However, the parameters file must always have the extension ".csv".
 
 # How to open the program
 
