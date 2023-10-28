@@ -13,9 +13,13 @@ A Git repository for our net zero project. Calculate the number of trees and cos
 # How to open the program
 
 - Make sure you have the latest version of Python installed on your computer.
+  
 - Download all of the files in this repository, and unzip the folder. The folder should be named "Net-Zero-Plan-main". Do not change any of the file names.
+  
 - Opening the program depends on what computer you are using:
+  
   - If you are using Windows, double click the file "gui.py" to run the program. Open the program using Python launcher.
+    
   - If you are using Mac, double click the file named "CLICK ME! (MAC).command" to run the program. If you do not have appropriate access privileges, do the following:
     - Right click the folder "Net-Zero-Plan-main", and click the option "New terminal at folder".
     - Wait for the terminal window to load. When you can type commands, enter the command `chmod u+x "CLICK ME! (MAC).command"`. This should grant you access privileges. Try to double click the file again.
