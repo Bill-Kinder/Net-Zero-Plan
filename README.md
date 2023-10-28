@@ -22,6 +22,7 @@ A Git repository for our net zero project. Calculate the number of trees and cos
 # How to open the program
 
 - Make sure you have the latest version of Python installed on your computer.
+  - You also need the following packages installed in your environment: `csv`, `matplotlib`, `numpy` and `tkinter`. To install a package, type this in the terminal: `pip install <package-name>` or `pip3 install <package-name>`. e.g.: `pip3 install tkinter`.
   
 - Download all of the files in this repository, and unzip the folder. The folder should be named "Net-Zero-Plan-main". Do not change any of the file names.
   
