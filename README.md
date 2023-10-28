@@ -35,7 +35,7 @@ A Git repository for our net zero project. Calculate the number of trees and cos
 
 # How to use the program
 
-1. Enter the correct quantities into the boxes under each question.
+1. Enter the correct quantities into the boxes under each question. (More questions can be added in the file "params.csv")
 2. Click the red "CALCULATE!" button to calculate total emissions, number of trees to reach net zero, and cost.
 3. Click the green "DISPLAY PLOT" button to display a graph showing CO2 per year vs number of trees planted vs cost.
 4. Click the blue "DISPLAY PIE CHART" button to display a pie chart detailing how each emissions source contributes to the overall emissions.
