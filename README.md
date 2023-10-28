@@ -1,10 +1,18 @@
 # NetZeroPlan
 A Git repository for our net zero project. Calculate the number of trees and cost of planting them to offset the Net Zero Initiative's carbon dioxide equivalent emissions!
 
-# Files
+# File Information
 - "CLICK ME! (MAC).command": Runs the program on MAC OS.
+  
 - "CLICK ME! (WINDOWS).py": Runs the program on Windows OS. Also contains the main code for the program.
+  
 - "Program.py": Contains code used by the program.
+
+- "params.csv": Contains all the questions and emissions sources used in the program to determine emissions sources and calculate total emissions. The parameters are:
+  - question: A string containing the question that links an emissions source or activity to a certain amount of emissions. This could be something like "How many people attend each meeting?"
+  - weight: A numerical variable that determines how much an emissions source contributes. An example of weight could be the number "50", indicating that the specific emissions source contributes 50kg of CO2 equivalent per unit of the emissions source.
+  - scope: A number that determines what combination of scopes 1, 2 and 3 that particular emissions source is. Due to time constraints this parameter was not integrated fully into the program, so the user should leave it as "0".
+  
 - "config.csv": Comma-separated value (csv) file containing 3 headings: "Cost of 1 tree (AUD)", "CO2 equivalent absorbed by 1 tree (kgCO2e)" and "Parameters file name". Parameters can be edited by opening the csv file in a spreadsheet or text editor (e.g.: Excel). However, the file extension must always be ".csv".
   - Cost of 1 tree: By default we assumed 1 tree costs $1.55 in Australian Dollars. This can be changed by the user if necessary.
   - CO2 equivalent absorbed by 1 tree: By default we assumed 1 tree absorbs 25kg of CO2 equivalent per year of its life. This can be changed if necessary.
